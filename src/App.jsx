@@ -17,13 +17,18 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-black text-white relative">
-      {/* Global spotlight cursor effect */}
+      {/* Global cursor spotlight */}
       <div
         className="pointer-events-none fixed inset-0 z-40"
         style={{
-          background: `radial-gradient(600px at ${spotlight.x}px ${spotlight.y}px, rgba(120,119,198,0.15), transparent 60%)`,
+          background: `radial-gradient(550px at ${spotlight.x}px ${spotlight.y}px, rgba(124,58,237,0.22), transparent 60%)`,
         }}
       />
+
+      {/* Subtle ambient gradients */}
+      <div className="pointer-events-none fixed inset-0" aria-hidden>
+        <div className="absolute inset-0 opacity-80 bg-[radial-gradient(circle_at_20%_10%,rgba(99,102,241,0.12),transparent_45%),radial-gradient(circle_at_80%_20%,rgba(56,189,248,0.10),transparent_45%),radial-gradient(circle_at_50%_85%,rgba(168,85,247,0.10),transparent_45%)]" />
+      </div>
 
       <Navbar />
 
@@ -35,11 +40,6 @@ export default function App() {
       </main>
 
       <Footer />
-
-      {/* subtle background gradient */}
-      <div className="pointer-events-none fixed inset-0 -z-0" aria-hidden>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(99,102,241,0.15),transparent_40%),radial-gradient(circle_at_80%_20%,rgba(56,189,248,0.12),transparent_40%),radial-gradient(circle_at_50%_80%,rgba(168,85,247,0.12),transparent_40%)]" />
-      </div>
     </div>
   );
 }

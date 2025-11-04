@@ -2,9 +2,18 @@ import { motion } from 'framer-motion';
 import { Mail, Github, Linkedin } from 'lucide-react';
 
 const SectionTitle = ({ id, title, subtitle }) => (
-  <div id={id} className="scroll-mt-24">
+  <div id={id} className="scroll-mt-28">
     <h2 className="text-2xl sm:text-3xl font-semibold text-white">{title}</h2>
     {subtitle && <p className="mt-1 text-zinc-400 text-sm sm:text-base">{subtitle}</p>}
+  </div>
+);
+
+const GlowCard = ({ children }) => (
+  <div className="relative">
+    <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-indigo-500/30 via-fuchsia-500/20 to-cyan-400/20 opacity-40 blur-xl" aria-hidden />
+    <div className="relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
+      {children}
+    </div>
   </div>
 );
 
@@ -66,33 +75,35 @@ function Experience() {
   return (
     <section className="relative">
       <SectionTitle id="experience" title="Experience" />
-      <div className="mt-6 space-y-6">
+      <div className="mt-6 space-y-5">
         {items.map((item, idx) => (
           <motion.div
             key={idx}
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5, delay: idx * 0.05 }}
-            className="relative pl-4 border-l border-zinc-800"
+            transition={{ duration: 0.5, delay: idx * 0.04 }}
+            className="relative pl-5"
           >
-            <div className="absolute -left-1.5 top-2 w-3 h-3 rounded-full bg-indigo-500 shadow-[0_0_18px_#6366f1]" />
-            <div className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="text-zinc-200 font-medium">{item.role} — <span className="text-white">{item.org}</span></div>
-                <div className="text-xs text-zinc-400">{item.date}</div>
+            <div className="absolute left-0 top-3 bottom-3 w-px bg-gradient-to-b from-transparent via-zinc-700 to-transparent" />
+            <GlowCard>
+              <div className="p-4 sm:p-5">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="text-zinc-200 font-medium">{item.role} — <span className="text-white">{item.org}</span></div>
+                  <div className="text-xs text-zinc-400">{item.date}</div>
+                </div>
+                {item.details && (
+                  <p className="mt-2 text-sm text-zinc-300">{item.details}</p>
+                )}
+                {item.bullets && (
+                  <ul className="mt-2 list-disc list-inside text-sm text-zinc-300 space-y-1">
+                    {item.bullets.map((b, i) => (
+                      <li key={i}>{b}</li>
+                    ))}
+                  </ul>
+                )}
               </div>
-              {item.details && (
-                <p className="mt-2 text-sm text-zinc-300">{item.details}</p>
-              )}
-              {item.bullets && (
-                <ul className="mt-2 list-disc list-inside text-sm text-zinc-300 space-y-1">
-                  {item.bullets.map((b, i) => (
-                    <li key={i}>{b}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
+            </GlowCard>
           </motion.div>
         ))}
       </div>
@@ -150,33 +161,34 @@ function Projects() {
   return (
     <section className="relative">
       <SectionTitle id="projects" title="Projects" />
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {projects.map((p, idx) => (
           <motion.div
             key={p.title}
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5, delay: idx * 0.05 }}
-            className="group bg-white/5 border border-white/10 rounded-xl p-4 hover:border-white/20 hover:bg-white/10 transition-colors"
+            transition={{ duration: 0.5, delay: idx * 0.04 }}
           >
-            <div className="flex-1">
-              <h3 className="text-white font-semibold text-lg">{p.title}</h3>
-              <p className="mt-2 text-sm text-zinc-300">{p.desc}</p>
-            </div>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {p.actions.map((a) => (
-                <a
-                  key={a.label}
-                  href={a.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-xs px-3 py-1.5 rounded-full bg-indigo-600/80 hover:bg-indigo-500 text-white shadow ring-1 ring-inset ring-white/10"
-                >
-                  {a.label}
-                </a>
-              ))}
-            </div>
+            <GlowCard>
+              <div className="p-4 sm:p-5 h-full">
+                <h3 className="text-white font-semibold text-lg">{p.title}</h3>
+                <p className="mt-2 text-sm text-zinc-300">{p.desc}</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {p.actions.map((a) => (
+                    <a
+                      key={a.label}
+                      href={a.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-xs px-3 py-1.5 rounded-full bg-indigo-600/80 hover:bg-indigo-500 text-white shadow ring-1 ring-inset ring-white/10"
+                    >
+                      {a.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </GlowCard>
           </motion.div>
         ))}
       </div>
@@ -215,21 +227,23 @@ function Skills() {
   return (
     <section className="relative">
       <SectionTitle id="skills" title="Skills" />
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-5">
         {categories.map((c) => (
-          <div key={c.title} className="bg-white/5 border border-white/10 rounded-xl p-4">
-            <h3 className="text-white font-medium mb-3">{c.title}</h3>
-            <div className="flex flex-wrap gap-2">
-              {c.items.map((skill) => (
-                <span
-                  key={skill}
-                  className="px-3 py-1.5 rounded-full text-xs bg-zinc-900/60 border border-white/10 text-zinc-200 hover:text-white hover:shadow-[0_0_24px_#6366f1aa] hover:border-indigo-500/40 transition"
-                >
-                  {skill}
-                </span>
-              ))}
+          <GlowCard key={c.title}>
+            <div className="p-4 sm:p-5">
+              <h3 className="text-white font-medium mb-3">{c.title}</h3>
+              <div className="flex flex-wrap gap-2">
+                {c.items.map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-3 py-1.5 rounded-full text-xs bg-zinc-900/60 border border-white/10 text-zinc-200 hover:text-white hover:shadow-[0_0_24px_#6366f1aa] hover:border-indigo-500/40 transition"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
+          </GlowCard>
         ))}
       </div>
     </section>
@@ -240,10 +254,10 @@ function Contact() {
   return (
     <section className="relative">
       <SectionTitle id="contact" title="Contact" />
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+      <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-5 text-sm">
         <a
           href="mailto:vishwajeet.7t@gmail.com"
-          className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition"
+          className="flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition"
         >
           <Mail className="w-4 h-4 text-zinc-300" />
           <span className="text-zinc-200">vishwajeet.7t@gmail.com</span>
@@ -252,7 +266,7 @@ function Contact() {
           href="https://github.com/kumarvishwajeettrivedi"
           target="_blank"
           rel="noreferrer"
-          className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition"
+          className="flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition"
         >
           <Github className="w-4 h-4 text-zinc-300" />
           <span className="text-zinc-200">github.com/kumarvishwajeettrivedi</span>
@@ -261,7 +275,7 @@ function Contact() {
           href="https://www.linkedin.com/in/vishwajeet-kumar-5b7530242"
           target="_blank"
           rel="noreferrer"
-          className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/10 transition"
+          className="flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition"
         >
           <Linkedin className="w-4 h-4 text-zinc-300" />
           <span className="text-zinc-200">linkedin.com/in/vishwajeet-kumar-5b7530242</span>
